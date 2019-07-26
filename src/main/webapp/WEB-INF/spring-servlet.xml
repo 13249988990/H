@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context 
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd"
+       >
+	
+	<context:component-scan base-package="com.foxlink.mes.web.ctrl"/>
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+		p:viewClass="org.springframework.web.servlet.view.JstlView"
+		p:prefix="/WEB-INF/jsp/"
+		p:suffix=".jsp"/>
+		
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/route/list.html" />
+			<mvc:mapping path="/route/toAdd.html" />
+			<mvc:mapping path="/route/toUpdate.html" />
+			<mvc:mapping path="/route/delete.html" />
+			
+			<mvc:mapping path="/site/list.html" />
+			<mvc:mapping path="/site/toAdd.html" />
+			<mvc:mapping path="/site/toUpdate.html" />
+			<mvc:mapping path="/site/delete.html" />
+			
+			<mvc:mapping path="/siteColumn/list.html" />
+			<mvc:mapping path="/siteColumn/toAdd.html" />
+			<mvc:mapping path="/siteColumn/toUpdate.html" />
+			<mvc:mapping path="/siteColumn/delete.html" />
+			
+			<mvc:mapping path="/admin/list.html" />
+			<mvc:mapping path="/admin/toAdd.html" />
+			<mvc:mapping path="/admin/update.html" />
+			<mvc:mapping path="/admin/delete.html" />
+			
+			<mvc:mapping path="/role/list.html" />
+			<mvc:mapping path="/role/toAdd.html" />
+			<mvc:mapping path="/role/toUpdate.html" />
+			<mvc:mapping path="/role/delete.html" />
+			
+			<mvc:mapping path="/order/toAdd.html" />
+			<mvc:mapping path="/order/delete.html" />
+			<mvc:mapping path="/repair/toUnbind.html" />
+			
+			<mvc:mapping path="/pack/toUnpack.html" />
+			<mvc:mapping path="/pack/showPallet.html" />
+			<mvc:mapping path="/plan/delete.html" />
+			<mvc:mapping path="/plan/toAdd.html" />
+			<mvc:mapping path="/plan/toUpdate.html" />
+			<mvc:mapping path="/plan/toUpdatePallet.html" />
+			<mvc:mapping path="/attachment/delete.html" />
+			
+			<mvc:mapping path="/packType/list.html" />
+			<mvc:mapping path="/packType/toAdd.html" />
+			<mvc:mapping path="/packType/toUpdate.html" />
+			
+			<mvc:mapping path="/ship/toUnaccept.html" />
+			<mvc:mapping path="/board/list.html" />
+			<mvc:mapping path="/ship/toUnship.html" />
+			
+			<mvc:mapping path="/production/rework.html" />
+			<mvc:mapping path="/ship/insertEDI.html" />
+			
+			
+			<bean id="adminInterceptor" class="com.foxlink.mes.interceptor.LoginInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+	<mvc:annotation-driven />
+</beans>

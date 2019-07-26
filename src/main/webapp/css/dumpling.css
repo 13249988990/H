@@ -1,0 +1,47 @@
+body{
+	text-align: center;
+	margin: 0px auto;
+	padding-bottom:20px;
+	font: 14px;
+	background-color: #ECE9D8;
+	font-family: Arial,Tahoma,Verdana;
+}
+
+table{
+	 text-align: center;
+	 margin: 0 auto;	
+}
+#formTable{
+	width: 400px;
+}
+table select{
+	width:155px;
+}
+td{
+	font-family: Arial,Tahoma,Verdana;
+	font-size: 13px;
+}
+#listTable td{
+	font-size: 12px;
+}
+#mainbody{
+	width: 100%
+	text-align: center;
+	margin: 10px auto;
+	
+}
+table .myleft{
+	text-align: left;
+	width: 60%;
+}
+caption{
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+#message{
+	color: red;
+	text-align: center;
+}
+a{
+	text-decoration: none;
+}

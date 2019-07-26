@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <!--   <bean id="jobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.foxlink.mes.timmer.TimmerSchedule"></property>
+        <property name="durability" value="true"></property>
+    </bean> -->
+   <!--  <bean id="job" class="com.foxlink.timmer.timmer"/> -->
+    <bean id="job" class="com.foxlink.mes.timer.CountTimeTask"/>
+	 <bean id="jobDetail"
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="job" />
+        <property name="targetMethod" value="run" />
+        <property name="concurrent" value="false" />
+    </bean>
+     <bean id="sayRunTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail"><!-- jobDetail是Spring定时器的特殊属性 -->
+			<ref bean="jobDetail" />
+		</property>
+		<property name="cronExpression">
+		<!-- 每五分钟触发一次<value>0 0/5 * * * ?</value> -->
+		<!-- 每五秒触发一次<value>0/5 * * * * ?</value> -->
+			<!-- 每天5点钟执行一次 --><!-- <value>0 0 5 * * ? *</value> --><!-- cronExpression是Spring定时器的特殊属性 -->
+			<!-- <value>0 0 8 ? * 2</value> -->
+			<value>0 * * * * ? *</value>
+		</property>
+		<property name="startDelay"><value>20</value></property>
+	</bean>
+
+    <!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序 -->
+    <bean id="startQuertz" lazy-init="false" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <!-- 管理trigger -->
+        <property name="triggers">
+            <list>
+                <ref bean="sayRunTrigger" />
+            </list>
+        </property>
+    </bean>
+</beans>
