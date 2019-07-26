@@ -27,7 +27,7 @@ public class Admin implements Serializable{
 	private String password;
 	private String department;
 	 private Set<Role> roles = new HashSet<Role>();
-	//这里只是测试GIT功能，么有更新
+	
 	 @Id @GeneratedValue
 	 @Column(name="col_id")
 	public Integer getId() {
