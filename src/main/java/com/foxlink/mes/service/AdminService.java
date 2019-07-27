@@ -9,4 +9,6 @@ public interface AdminService extends BaseService<Admin> {
 
 	Admin findByUsername(String username);
 
+	boolean changeState(String state, Integer userAccount);
+
 }

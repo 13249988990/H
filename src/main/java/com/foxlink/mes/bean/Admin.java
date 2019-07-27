@@ -15,6 +15,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.apache.log4j.Logger;
+
+import com.foxlink.mes.Interface.LoginState;
 import com.foxlink.utils.Md5Utils;
 
 @Entity
@@ -22,10 +25,20 @@ import com.foxlink.utils.Md5Utils;
 public class Admin implements Serializable{
 	private static final long serialVersionUID = 1L;
 	public static final String USERNAME = "dumpling_user";
-	private Integer id;
-	private String username;
-	private String password;
+	Logger log = Logger.getLogger(Admin.class);
+	private Integer id;//id
+	private String username;//工号
+	private String password;//密码
 	private String department;
+	private String realName;//中文名
+	
+
+	private String job;//职务
+	private String email;//邮箱
+	private int state=LoginState.ENABLE;//账号状态
+	private Long loginTime;//登录时间，时间戳
+	private String loginIp;//登录IP
+	
 	 private Set<Role> roles = new HashSet<Role>();
 	
 	 @Id @GeneratedValue
@@ -53,7 +66,8 @@ public class Admin implements Serializable{
 	}
 
 	public void setPassword(String password) {
-		this.password = Md5Utils.encryptString(password);
+		log.error("调用了setpassword方法？");
+		this.password = password;
 	}
 	
 	
@@ -66,7 +80,7 @@ public class Admin implements Serializable{
 		this.department = department;
 	}
 
-	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
+	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(name="table_admin_role",joinColumns={@JoinColumn(name="col_admin_id")},inverseJoinColumns={@JoinColumn(name="col_role_id")})
 	public Set<Role> getRoles() {
 		return roles;
@@ -102,11 +116,84 @@ public class Admin implements Serializable{
 	}
 
 	public Admin(String username, String password, String department, Set<Role> roles) {
-		super();
+		//super();
 		this.username = username;
-		this.password = Md5Utils.encryptString(password);
+		this.password =password;// Md5Utils.encryptString(password);
+		log.error("加密后-->"+this.password);
 		this.department = department;
 		this.roles = roles;
 	}
+	
+	public Admin(String username, String password, String realName, String job, String email, int state,
+			Set<Role> roles) {
+		//super();
+		this.username = username;
+		this.password = password;
+		this.realName = realName;
+		this.job = job;
+		this.email = email;
+		this.state = state;
+		this.roles = roles;
+	}
+
+	@Column(name="col_real_name")
+	public String getRealName() {
+		return realName;
+	}
+	
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
+	@Column(name="col_job_name")
+	public String getJob() {
+		return job;
+	}
+
+	public void setJob(String job) {
+		this.job = job;
+	}
+	@Column(name="col_email")
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	@Column(name="col_state")
+	public int getState() {
+		return state;
+	}
+
+	public void setState(int state) {
+		this.state = state;
+	}
+	@Column(name="col_login_time")
+	public Long getLoginTime() {
+		return loginTime;
+	}
+
+	public void setLoginTime(Long loginTime) {
+		this.loginTime = loginTime;
+	}
+	@Column(name="col_login_ip")
+	public String getLoginIp() {
+		return loginIp;
+	}
+
+	public void setLoginIp(String loginIp) {
+		this.loginIp = loginIp;
+	}
+	public Admin() {
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public String toString() {
+		return "Admin {id:" + id + ", username:" + username + ", password:" + password + ", department:" + department
+				+ ", realName:" + realName + ", job:" + job + ", email:" + email + ", state:" + state + ", loginTime:"
+				+ loginTime + ", loginIp:" + loginIp + ", roles:" + roles + "}";
+	}
+	
 	
 }

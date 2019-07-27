@@ -18,17 +18,31 @@
 		</div>
 		<div id="mainbody" >
 			<form action="<c:url value="/admin/update.html"/>" method="post">
-				<input type="hidden" name="adminId" value="${admin.id}">
+				<input type="hidden" name="id" value="${admin.id}">
 				<table border="1" style="width: 400px;">
 				<caption>用戶更新 <a href="<c:url value="/admin/list.html"/>">返回列表</a></caption>
 				<tr>
 					<th style="width: 30%;">用戶名</th>
-					<td><input type="text" name="username" value="${admin.username}"> </td>
+					<td><input type="text" name="username" readonly="readonly" value="${admin.username}"> </td>
 				</tr>
 				<tr>
-					<th style="width: 30%;">部門</th>
-					<td><input type="text" name="department"  value="${admin.department}"> </td>
+					<th style="width: 30%;">姓名</th>
+					<td><input type="text" name="realName" required="required" id="realName" value="${admin.realName}" > </td>
 				</tr>
+				<tr>
+					<th style="width: 30%;">职务</th>
+					<td><input type="text" name="job"  id="job" value="${admin.job}" > </td>
+				</tr>
+				<tr>
+					<th style="width: 30%;">邮箱</th>
+					<td><input type="text" name="email"  id="email"  value="${admin.email}"> </td>
+				</tr>
+				<tr>
+					<th style="width: 30%;">密碼</th>
+					<td><input type="password" name="password" required="required" id="password" value="${admin.password}"> </td>
+				</tr>
+				
+				
 				<tr>
 					<th>角色</th>
 					<td style="text-align: left;">

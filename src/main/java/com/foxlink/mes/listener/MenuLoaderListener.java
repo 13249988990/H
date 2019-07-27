@@ -24,10 +24,13 @@ import org.springframework.context.annotation.PropertySources;
 import org.springframework.core.env.Environment;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.foxlink.mes.Interface.LoginState;
 import com.foxlink.mes.bean.Admin;
 import com.foxlink.mes.bean.Department;
 import com.foxlink.mes.bean.Role;
 import com.foxlink.mes.service.DepartmentService;
+import com.foxlink.mes.service.RoleService;
+import com.foxlink.utils.Md5Utils;
 import com.foxlink.utils.SystemConfig;
 @Configuration
 @PropertySources({
@@ -56,6 +59,7 @@ public class MenuLoaderListener implements ServletContextListener {
 		//这里初始化用户和权限
 		
 		DepartmentService departmentService = (DepartmentService) context.getBean(DepartmentService.class);
+		RoleService roleService =  context.getBean(RoleService.class);
 		Environment env =(Environment) context.getBean(Environment.class);
 		log.warn("---初始化开始----------------------------------------");
 		if (departmentService.getCount(null)>0) {
@@ -76,10 +80,13 @@ public class MenuLoaderListener implements ServletContextListener {
 				
 			}
 			role.setAuthorities(authList);
+			log.error("---开始保存角色及角色权限");
+			roleService.save(role);
 			Set<Role> roleSet = new HashSet<>();
 			roleSet.add(role);
 			log.warn("---开始存入管理员信息");
-			Admin admin = new Admin("Admin","1111",null,roleSet);
+			Admin admin = new Admin("Admin","1111","管理员","系统管理员","test@163.com",LoginState.ENABLE,roleSet);
+			admin.setPassword(Md5Utils.encryptString("1111"));
 			List<Admin> adminList = new ArrayList<>();
 			adminList.add(admin);
 			Department department = new Department("1001", "管理员部", "AK47",adminList );

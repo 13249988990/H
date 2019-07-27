@@ -49,6 +49,42 @@ public class Department {
 		this.adminList = adminList;
 	}
 	
+	public Department() {
+		// TODO Auto-generated constructor stub
+	}
 	
+	
+	
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public String getDepartmentNum() {
+		return departmentNum;
+	}
+	public void setDepartmentNum(String departmentNum) {
+		this.departmentNum = departmentNum;
+	}
+	public String getDepartmentName() {
+		return departmentName;
+	}
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
+	public String getLeaderNum() {
+		return leaderNum;
+	}
+	public void setLeaderNum(String leaderNum) {
+		this.leaderNum = leaderNum;
+	}
+	public List<Admin> getAdminList() {
+		return adminList;
+	}
+	public void setAdminList(List<Admin> adminList) {
+		this.adminList = adminList;
+	}
 
+	
 }

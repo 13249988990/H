@@ -14,6 +14,12 @@ public class Md5Utils {
 		  }
 		  return strBuffer.toString();
 		 }
+	   /**
+	    * 
+	    * @param pwd 需要加密的密码
+	    * @param database，数据库存在的已经加密过的密码
+	    * @return
+	    */
 	  public static boolean compareValue(String pwd,CharSequence database){
 		 
 		  return (encryptString(pwd)).equals(database);

@@ -32,8 +32,20 @@ label{
 				<table border="1" style="width: 400px;">
 				<caption>用戶添加 <a href="<c:url value="/admin/list.html"/>">返回列表</a></caption>
 				<tr>
-					<th style="width: 30%;">用戶名</th>
-					<td><input type="text" name="username" required="required" id="username"> </td>
+					<th style="width: 30%;">账号</th>
+					<td><input type="text" name="username" required="required" id="username" pattern="[A-z0-9]{1,}" placeholder="账号只能是数字字母"> </td>
+				</tr>
+				<tr>
+					<th style="width: 30%;">姓名</th>
+					<td><input type="text" name="realName" required="required" id="realName" > </td>
+				</tr>
+				<tr>
+					<th style="width: 30%;">职务</th>
+					<td><input type="text" name="job"  id="job" > </td>
+				</tr>
+				<tr>
+					<th style="width: 30%;">邮箱</th>
+					<td><input type="text" name="email"  id="email" > </td>
 				</tr>
 				<tr>
 					<th style="width: 30%;">密碼</th>
@@ -43,10 +55,10 @@ label{
 					<th style="width: 30%;">確認密碼</th>
 					<td><input type="password" name="repassword" required="required" id="repassword"> </td>
 				</tr>
-				<tr>
+				<!-- <tr>
 					<th style="width: 30%;">部門</th>
 					<td><input type="text" name="department" required="required" id="department"> </td>
-				</tr>
+				</tr> -->
 				<tr>
 					<th>角色</th>
 					<td style="text-align: left;">

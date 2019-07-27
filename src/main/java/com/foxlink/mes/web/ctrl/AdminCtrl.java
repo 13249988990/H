@@ -1,17 +1,24 @@
 package com.foxlink.mes.web.ctrl;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.foxlink.mes.Interface.LoginState;
 import com.foxlink.mes.bean.Admin;
 import com.foxlink.mes.bean.Role;
 import com.foxlink.mes.service.AdminService;
 import com.foxlink.mes.service.RoleService;
 import com.foxlink.utils.Md5Utils;
+import com.foxlink.utils.WebUtil;
 
 @Controller
 @RequestMapping("/admin")
@@ -20,18 +27,24 @@ public class AdminCtrl {
 	private AdminService adminService;
 	@Resource
 	private RoleService roleService;
-	
+	Logger log = Logger.getLogger(AdminCtrl.class);
 	@RequestMapping(value="login")
 	public String login(String username, String password, HttpServletRequest request){
+		log.error(username+"--"+password);
+		
 		if (username == null || "".equals(username.trim())) {
 			return "/admin/login";
 		}
 		if (password == null || "".equals(password.trim())) {
 			return "/admin/login";
 		}
+		log.error("开始查找用户");
 		Admin admin = adminService.findByUsername(username);
 		if (admin == null) {
 			request.setAttribute("message", "用戶名有誤");
+			return "/admin/login";
+		}else if(admin.getState()==LoginState.DISAABLE){
+			request.setAttribute("message", "用户已被禁用");
 			return "/admin/login";
 		}else if(!Md5Utils.compareValue(password, admin.getPassword()))
 		{
@@ -39,7 +52,9 @@ public class AdminCtrl {
 			return "/admin/login";
 		}
 		else{
-			
+			admin.setLoginTime(new Date().getTime()/1000);
+			admin.setLoginIp(WebUtil.getIP(request));
+			adminService.update(admin);
 			request.getSession().setAttribute(Admin.USERNAME, admin);
 			request.setAttribute("message", "登錄成功!");
 			request.setAttribute("returnUrl", request.getParameter("returnUrl"));
@@ -90,12 +105,14 @@ public class AdminCtrl {
 		return "/admin/edit";
 	}
 	@RequestMapping(value="update",method=RequestMethod.POST)
-	public String update(Integer adminId,String username,String department, Integer[] roleIds, ModelMap model){
+	public String update(Admin admin, Integer[] roleIds, ModelMap model){
 		Set<Role> roles = buildRoles(roleIds);
-		Admin admin = adminService.find(adminId);
-		admin.setUsername(username);
-		admin.setDepartment(department);
+		log.error(admin.toString());
+		//Admin admin = adminService.find(adminId);
 		admin.setRoles(roles);
+		if (admin.getPassword().length()<15) {
+			admin.setPassword(Md5Utils.encryptString(admin.getPassword()));
+		}
 		adminService.update(admin);
 		model.addAttribute("message", "用戶更新成功!");
 		model.addAttribute("returnUrl", "/admin/list.html");
@@ -120,5 +137,13 @@ public class AdminCtrl {
 			return roles;
 		}
 		return null;
+	}
+	@RequestMapping("changeState")
+	public ModelAndView changeState(String state,Integer accountId){
+		ModelAndView mav = new ModelAndView("/admin/list");
+		adminService.changeState(state, accountId);
+		mav.addObject("admins", adminService.getList());
+		
+		return mav;
 	}
 }

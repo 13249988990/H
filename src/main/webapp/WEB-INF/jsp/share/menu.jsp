@@ -5,7 +5,7 @@
 		<li><a href="#">系統管理</a>
 			<ul>
 				<d:role url="/route/list.html">
-					<li><a href="<c:url value="/route/list.html"/>">流程管理</a></li>
+					<li><a href="<c:url value="/department/list.html"/>">部门管理</a></li>
 				</d:role>
 				<d:role url="/admin/list.html">
 					<li><a href="<c:url value="/admin/list.html"/>">用戶管理</a></li>

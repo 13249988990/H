@@ -10,4 +10,5 @@ public class BaseView {
 		mv.addObject("returnUrl", url);
 		return mv;
 	}
+	
 }
