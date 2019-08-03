@@ -11,4 +11,6 @@ public interface AdminService extends BaseService<Admin> {
 
 	boolean changeState(String state, Integer userAccount);
 
+	void deleteUser(Integer id) throws Exception;
+
 }

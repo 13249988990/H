@@ -47,10 +47,14 @@ public abstract  class BaseServiceBean<T> implements BaseService<T> {
 	 * 删除实体
 	 */
 	public void delete(Serializable... ids) {
+		
 		for (Serializable id : ids) {
 			getSession().delete(getSession().load(this.entityClass, id));
 		}
 		
+	}
+	public void deleteEntity(T entity){
+		getSession().delete(entity);
 	}
 	/*
 	 * 查找实体

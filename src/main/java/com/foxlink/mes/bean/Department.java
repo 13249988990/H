@@ -1,5 +1,6 @@
 package com.foxlink.mes.bean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,13 +10,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
+import javax.persistence.UniqueConstraint;
 @Entity
-@Table(name="table_department")
-public class Department {
+@Table(name="table_department",uniqueConstraints={@UniqueConstraint(columnNames="col_department_num")})
+public class Department implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "ud")
 	@TableGenerator(name = "ud",
@@ -33,8 +40,8 @@ public class Department {
 	private String departmentName;//部门名字
 	@Column(name="col_leader_num")
 	private String leaderNum; //部门领导
-	@ManyToMany(cascade={CascadeType.ALL})
-	@JoinTable(name="table_department_user")
+	@ManyToMany(cascade={CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+	@JoinTable(name="table_department_user",joinColumns=@JoinColumn(name="col_department_id",referencedColumnName="col_id"),inverseJoinColumns=@JoinColumn(name="col_user_id",referencedColumnName="col_id"))
 	private List<Admin> adminList=new ArrayList<Admin>();
 	@Override
 	public String toString() {

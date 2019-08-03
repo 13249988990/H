@@ -18,6 +18,7 @@
 					<th>账号</th>
 					<th>姓名</th>
 					<th>职务</th>
+					<th>部门</th>
 					<th>邮件</th>
 					<th>最后登录时间</th>
 					<th>最后登录IP</th>
@@ -30,6 +31,7 @@
 						<td>${admin.username}</td>
 						<td>${admin.realName}</td>
 						<td>${admin.job}</td>
+						<td>${admin.department}</td>
 						<td>${admin.email}</td>
 						<td>${admin.loginTime}</td>
 						<td>${admin.loginIp}</td>

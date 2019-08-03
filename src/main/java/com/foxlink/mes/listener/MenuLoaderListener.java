@@ -1,22 +1,15 @@
 package com.foxlink.mes.listener;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.TreeSet;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import org.apache.commons.configuration2.PropertiesConfiguration;
-import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -86,9 +79,12 @@ public class MenuLoaderListener implements ServletContextListener {
 			roleSet.add(role);
 			log.warn("---开始存入管理员信息");
 			Admin admin = new Admin("Admin","1111","管理员","系统管理员","test@163.com",LoginState.ENABLE,roleSet);
+			Admin user = new Admin("User","1111","管理员","系统管理员","test@163.com",LoginState.ENABLE,roleSet);
 			admin.setPassword(Md5Utils.encryptString("1111"));
+			user.setPassword(Md5Utils.encryptString("1111"));
 			List<Admin> adminList = new ArrayList<>();
 			adminList.add(admin);
+			adminList.add(user);
 			Department department = new Department("1001", "管理员部", "AK47",adminList );
 				departmentService.save(department);
 		}

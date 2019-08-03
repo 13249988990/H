@@ -4,4 +4,6 @@ import com.foxlink.mes.bean.Department;
 
 public interface DepartmentService extends BaseService<Department>{
 
+	void allowcationUser(Integer departmentId, Integer[] userIds);
+
 }

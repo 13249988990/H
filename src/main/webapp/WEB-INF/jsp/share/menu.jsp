@@ -4,15 +4,17 @@
 	<ul>
 		<li><a href="#">系統管理</a>
 			<ul>
-				<d:role url="/route/list.html">
+				
 					<li><a href="<c:url value="/department/list.html"/>">部门管理</a></li>
-				</d:role>
-				<d:role url="/admin/list.html">
+				
+				
 					<li><a href="<c:url value="/admin/list.html"/>">用戶管理</a></li>
-				</d:role>
+				
 				<d:role url="/role/list.html">
 					<li><a href="<c:url value="/role/list.html"/>">角色管理</a></li>
 				</d:role>
+				<li><a href="<c:url value="/performance/selectType.html"/>">绩效填写</a></li>
+				
 				<li><a href="<c:url value="/systemReload.html"/>">刷新系统</a></li>
 				<li><a href="<c:url value="/Firefox21.0.exe"/>">火狐下载</a></li>
 				<li><a href="<c:url value="/jre.exe"/>">Java_JDK</a></li>

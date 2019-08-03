@@ -11,3 +11,4 @@ interface FormState{
 	public static final int BOSS_SIGN=3;//稽核签核
 	
 }
+

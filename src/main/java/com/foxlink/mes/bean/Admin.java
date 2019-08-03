@@ -1,10 +1,11 @@
 package com.foxlink.mes.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,14 +15,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.apache.log4j.Logger;
 
 import com.foxlink.mes.Interface.LoginState;
-import com.foxlink.utils.Md5Utils;
 
 @Entity
-@Table(name="table_admin")
+@Table(name="table_admin",uniqueConstraints={@UniqueConstraint(columnNames = { "col_username" })})
 public class Admin implements Serializable{
 	private static final long serialVersionUID = 1L;
 	public static final String USERNAME = "dumpling_user";
@@ -38,7 +39,7 @@ public class Admin implements Serializable{
 	private int state=LoginState.ENABLE;//账号状态
 	private Long loginTime;//登录时间，时间戳
 	private String loginIp;//登录IP
-	
+	private List<Department> departments=new ArrayList<Department>();
 	 private Set<Role> roles = new HashSet<Role>();
 	
 	 @Id @GeneratedValue
@@ -73,7 +74,11 @@ public class Admin implements Serializable{
 	
 	
 	public String getDepartment() {
-		return department;
+		String dpt="";
+		for (int i = 0; i < departments.size(); i++) {
+			dpt+=departments.get(i).getDepartmentName()+",";
+		}
+		return dpt;
 	}
 
 	public void setDepartment(String department) {
@@ -194,6 +199,16 @@ public class Admin implements Serializable{
 				+ ", realName:" + realName + ", job:" + job + ", email:" + email + ", state:" + state + ", loginTime:"
 				+ loginTime + ", loginIp:" + loginIp + ", roles:" + roles + "}";
 	}
+	@ManyToMany
+	@JoinTable(name="table_department_user",joinColumns={@JoinColumn(name="col_user_id")},inverseJoinColumns={@JoinColumn(name="col_department_id")})
+	public List<Department> getDepartments() {
+		return departments;
+	}
+
+	public void setDepartments(List<Department> departments) {
+		this.departments = departments;
+	}
+	
 	
 	
 }

@@ -113,15 +113,18 @@ public class AdminCtrl {
 		if (admin.getPassword().length()<15) {
 			admin.setPassword(Md5Utils.encryptString(admin.getPassword()));
 		}
+		Admin temp = adminService.find(admin.getId());
+		admin.setDepartments(temp.getDepartments());
 		adminService.update(admin);
+		
 		model.addAttribute("message", "用戶更新成功!");
 		model.addAttribute("returnUrl", "/admin/list.html");
 		return "/share/message";
 	}
 	
 	@RequestMapping(value="/delete",method=RequestMethod.GET)
-	public String delete(Integer id, ModelMap model){
-		adminService.delete(id);
+	public String delete(Integer id, ModelMap model) throws Exception{
+		adminService.deleteUser(id);
 		model.addAttribute("message", "用戶刪除成功!");
 		model.addAttribute("returnUrl", "/admin/list.html");
 		return "/share/message";
