@@ -24,7 +24,7 @@ margin: 10px;
 				//选择季度、半年、月时 添加其它选择行
 				if($("#otherInfo").length==0){
 					var tab=document.getElementById("condition");
-					var row =tab.insertRow(2);
+					var row =tab.insertRow(3);
 					var cell1=row.insertCell(0);
 					var cell2=row.insertCell(1);
 					cell1.innerHTML="其它选择";
@@ -38,7 +38,12 @@ margin: 10px;
 					   dataType:"json",
 					   async:false,
 					   success: function(msg){
-					     alert( "Data Saved: " + msg );
+						  console.log(msg[0].id)
+						   $("#otherInfo").empty();
+					     for(var i=0;i<msg.length;i++){
+					    	 
+					    	 $("#otherInfo").append("<option value="+i+">"+msg[i].id+"</option>")
+					     }
 					   }
 					});
 			}
@@ -53,10 +58,19 @@ margin: 10px;
 		<div class="menu">
 			<%@ include file="../share/menu.jsp"%>
 		</div>
+		<c:if test="${empty message }">
 		<div id="mainbody" >
-			<form action="<c:url value="/department/saveDepartment.html"/>" method="post">
+			<form action="<c:url value="/performance/selectType.html"/>" method="post">
 				<table id="condition" border="1" style="width: 600px;">
 				<caption>绩效考核类型选择 <a href="<c:url value="/department/list.html"/>">返回列表</a></caption>
+				<tr>
+					<td style="width: 30%;">部门选择</td>
+					<td><select name="departmentId" id="departmentId">
+							<c:forEach items="${departments }" var="department">
+								<option value="${department.id }">${department.departmentName }</option>
+							</c:forEach>
+					</select> </td>
+				</tr>
 				<tr>
 					<td style="width: 30%;">类型选择</td>
 					<td><select name="type" id="type">
@@ -84,6 +98,7 @@ margin: 10px;
 			</table>
 			</form>
 		</div>
+		</c:if>
 		<h3 id="message">${message}</h3>
 	</div>
 </body>
