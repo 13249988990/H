@@ -9,6 +9,8 @@ import javax.annotation.Resource;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import com.foxlink.mes.Interface.LoginState;
+import com.foxlink.mes.annotation.MethodInfo;
 import com.foxlink.mes.bean.Admin;
 import com.foxlink.mes.bean.Department;
 import com.foxlink.mes.service.AdminService;
@@ -49,11 +51,12 @@ public class DepartmentServiceBean extends BaseServiceBean<Department> implement
 	}
 	@Override
 	public List<Map<String, Object>> getPerformanceUserAndState(Integer departmentId,int type,int year,int numValue){
-		List<Map<String, Object>> userInfos = this.getJdbcTemplate().queryForList("select a.*,b.* from table_admin a join table_department_user c on a.col_id=c.col_user_id "
-				+ "join table_department b on b.col_id=c.col_department_id where b.col_id=?",departmentId);
+		List<Map<String, Object>> userInfos = this.getJdbcTemplate().queryForList("select a.col_id as col_user_id,b.col_id as col_department_id,a.*,b.* from table_admin a join table_department_user c on a.col_id=c.col_user_id "
+				+ "join table_department b on b.col_id=c.col_department_id where b.col_id=? and a.col_state=?",departmentId,LoginState.ENABLE);
 		for (int i = 0; i < userInfos.size(); i++) {
-			Integer userId = (Integer) userInfos.get(i).get("col_id");
+			Integer userId = (Integer) userInfos.get(i).get("col_user_id");
 			//判断用户id该类型的考核是否完成
+			log.error("{userId:"+userId+",type:"+type+",year:"+year+",otherInfo:"+numValue+"}");
 			if (performanceRecordsService.userIsFinish(userId, type, year, numValue)) {
 				userInfos.get(i).put("col_state", "已考核");
 			}else{
@@ -61,6 +64,19 @@ public class DepartmentServiceBean extends BaseServiceBean<Department> implement
 			}
 		}
 		return userInfos;
+	}
+	@Override
+	@MethodInfo(desc = "根据类型、年份、其它值查找当前部门是否完成该类型的考核", param = { "otherInfo：{0,0-1,0-3,0-11}" })
+	public boolean checkIsFinish(int departmentId,int type,int year,int otherInfo){
+		//取得部门所有启用账号数量。
+		 Integer totalCount = this.getJdbcTemplate().queryForObject("select count(*) from table_admin a join table_department_user c on a.col_id=c.col_user_id "
+				+ "join table_department b on b.col_id=c.col_department_id where b.col_id=? and a.col_state=?",Integer.class,departmentId,LoginState.ENABLE);
+		//取得该部门当前类型绩效已考核数量
+		 Integer current = this.getJdbcTemplate().queryForObject("select count(distinct(col_user_id)) from table_performance_records where col_type=? and col_year=? and col_num_value=? and col_department_id=?", Integer.class,type,year,otherInfo,departmentId);
+		 if (totalCount==current) {
+			return true;
+		}
+		 return false;
 	}
 	
 }

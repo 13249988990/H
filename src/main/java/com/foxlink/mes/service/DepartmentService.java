@@ -15,4 +15,6 @@ public interface DepartmentService extends BaseService<Department>{
 
 	List<Map<String, Object>> getPerformanceUserAndState(Integer departmentId, int type, int year, int numValue);
 
+	boolean checkIsFinish(int departmentId, int type, int year, int otherInfo);
+
 }

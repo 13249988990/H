@@ -34,15 +34,23 @@ public class PerformanceRecords {
 	private Integer type;//考核类型{0:"年度",1:"上半年，下半年"，2："季度考核",3:"月份考核"}
 	@Column(name="col_create_date")
 	private long createDate;//考核时间
+	@Column(name="col_total_core")
+	private int totalCore=0;
+	@Column(name="col_department_id")
+	private int departmentId;
 	@Column(name="col_state")
-	private int state;//考核状态 {0:"主管填写完成",1:"稽核小组稽核完成",2"审核完成"}
 	
+	private int state;//考核状态 {0:"主管填写完成",1:"稽核小组稽核完成",2"审核完成"}
+	@Column(name="col_basic_money")
+	private int basicMoney=0;
 	public PerformanceRecords() {
 		// TODO Auto-generated constructor stub
 	}
 	
+	
+
 	public PerformanceRecords(Integer userId, String userName, Integer year, Integer numVaue, Integer type,
-			long createDate, int state) {
+			long createDate, int totalCore, int state,int departmentId,int basicMoney) {
 		
 		this.userId = userId;
 		this.userName = userName;
@@ -50,8 +58,13 @@ public class PerformanceRecords {
 		this.numVaue = numVaue;
 		this.type = type;
 		this.createDate = createDate;
+		this.totalCore = totalCore;
 		this.state = state;
+		this.departmentId=departmentId;
+		this.basicMoney=basicMoney;
 	}
+
+
 
 	public Integer getId() {
 		return id;
@@ -105,6 +118,38 @@ public class PerformanceRecords {
 	public String toString() {
 		return "PerformanceRecords {id:" + id + ", userId:" + userId + ", userName:" + userName + ", year:" + year
 				+ ", numVaue:" + numVaue + ", type:" + type + ", createDate:" + createDate + ", state:" + state + "}";
+	}
+
+	public int getTotalCore() {
+		return totalCore;
+	}
+
+	public void setTotalCore(int totalCore) {
+		this.totalCore = totalCore;
+	}
+
+
+
+	public int getDepartmentId() {
+		return departmentId;
+	}
+
+
+
+	public void setDepartmentId(int departmentId) {
+		this.departmentId = departmentId;
+	}
+
+
+
+	public int getBasicMoney() {
+		return basicMoney;
+	}
+
+
+
+	public void setBasicMoney(int basicMoney) {
+		this.basicMoney = basicMoney;
 	}
 	
 	

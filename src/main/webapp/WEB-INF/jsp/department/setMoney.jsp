@@ -31,22 +31,25 @@ margin: 10px;
 		</div>
 		<c:if test="${empty message }">
 		<div id="mainbody" >
-				<form id="form1" action="" method="post">
+				<form id="form1" action="setMoney.html" method="post">
 				<table id="condition" border="1" style="width: 600px;">
-				<caption>${department.departmentName } 绩效考核 ${state } <button>提交全部</button></caption>
+				<caption> 部门金额设置 <button>提交全部</button></caption>
 				<thead>
-					<th>用户名</th>
-					<th>姓名</th>
-					<th>职位</th>
-					<th>状态</th>
+					<th>部门名称<input type="text" name="year" value="${year }">
+					<input type="text" name="type" value="${type }">
+					<input type="text" name="otherInfo" value="${otherInfo }">
+					</th>
+					<th>部门代码</th>
+					<th>金额</th>
+					
 				</thead>
-				<c:forEach items="${userInfos }" var="user">
+				<c:forEach items="${departments }" var="department">
 					<tr>
-						<td>${user.col_username }<input type="hidden" name="ids" value="${user.col_user_id }"></td>
-						<td>${user.col_real_name }</td>
-						<td><a href="editPerformance.html?userId=${user.col_user_id }&type=${type}&year=${year}&otherInfo=${otherInfo}&departmentId=${user.col_department_id }">${user.col_job_name }</a></td>
+						<td>${department.departmentName }</td>
+						<td>${department.departmentNum }</td>
+						<td><input type="hidden" name="ids" value="${department.id }"><input type="text" name="moneys"></td>
 						
-						<td>${user.col_state }</td>
+						
 					</tr>
 				</c:forEach>
 			</table>

@@ -16,6 +16,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.persistence.UniqueConstraint;
+
+import com.foxlink.mes.Interface.DepartmentType;
 @Entity
 @Table(name="table_department",uniqueConstraints={@UniqueConstraint(columnNames="col_department_num")})
 public class Department implements Serializable{
@@ -40,6 +42,9 @@ public class Department implements Serializable{
 	private String departmentName;//部门名字
 	@Column(name="col_leader_num")
 	private String leaderNum; //部门领导
+	@Column(name="col_type")
+	private int type=DepartmentType.ONE;
+	
 	@ManyToMany(cascade={CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
 	@JoinTable(name="table_department_user",joinColumns=@JoinColumn(name="col_department_id",referencedColumnName="col_id"),inverseJoinColumns=@JoinColumn(name="col_user_id",referencedColumnName="col_id"))
 	private List<Admin> adminList=new ArrayList<Admin>();
@@ -91,6 +96,12 @@ public class Department implements Serializable{
 	}
 	public void setAdminList(List<Admin> adminList) {
 		this.adminList = adminList;
+	}
+	public int getType() {
+		return type;
+	}
+	public void setType(int type) {
+		this.type = type;
 	}
 
 	

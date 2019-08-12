@@ -1,6 +1,7 @@
 package com.foxlink.mes.web.ctrl;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -9,9 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.foxlink.mes.Interface.DepartmentType;
 import com.foxlink.mes.bean.Department;
 import com.foxlink.mes.service.AdminService;
+import com.foxlink.mes.service.DepartmentMoneyService;
 import com.foxlink.mes.service.DepartmentService;
+import com.foxlink.utils.SqlText;
 
 @Controller
 @RequestMapping("/department")
@@ -21,6 +25,8 @@ public class DepartmentCtrl {
 	@Resource
 	private AdminService adminService;
 	Logger log = Logger.getLogger(Department.class);
+	@Resource
+	DepartmentMoneyService departmentMoneyService;
 	@RequestMapping("list")
 	public ModelAndView list(){
 		ModelAndView mv = new ModelAndView("/department/list");
@@ -101,6 +107,34 @@ public class DepartmentCtrl {
 		
 		return mv;
 		
+	}
+	//@LoginCheck(valueUrl = "/department/setMoney.html")
+	@RequestMapping("setMoney")
+	public ModelAndView setMoney(HttpServletRequest request,
+			@RequestParam(name="type",defaultValue="100")int type,
+			@RequestParam(name="year",defaultValue="100")int year,
+			@RequestParam(name="otherInfo",defaultValue="0")int otherInfo,
+			int [] ids,int[] moneys) throws Exception{
+		ModelAndView mav = new ModelAndView("department/selectType");
+		if (year!=100) {
+			mav.setViewName("department/setMoney");
+			mav.addObject("departments", departmentService.getList(new SqlText("where o.type=?", DepartmentType.ONE), "order by o.id"));
+		}
+		if(year!=100&&ids!=null&&ids.length>0){
+			log.error("执行保存部门金额任务");
+			String message = null;
+			try {
+				message=departmentMoneyService.saveMoney(type, year, otherInfo, ids, moneys);
+			} catch (Exception e) {
+				// TODO: handle exception
+				message="保存异常";
+			}
+			mav.addObject("message",message );
+		}
+		mav.addObject("year", year);
+		mav.addObject("type", type);
+		mav.addObject("otherInfo", otherInfo);
+		return mav;
 	}
 	
 }

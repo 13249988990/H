@@ -6,4 +6,8 @@ public interface PerformanceRecordsService extends BaseService<PerformanceRecord
 
 	boolean userIsFinish(int userId, int type, int year, int numVlaue);
 
+	String saveCore(int type, int year, int otherInfo, int[] ids, int[] cores, int userId,int departmentId,int basicMoney);
+
+	boolean curretUserIsFinish(int type, int year, int otherInfo, int userId);
+
 }
