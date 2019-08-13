@@ -32,4 +32,8 @@ public class DepartmentMoneyServiceBean extends BaseServiceBean<DepartmentMoney>
 		message=message==null?"金额设置已完成":message;
 		return message;
 	}
+	@Override
+	public boolean departmentMoneyIsSet(int type ,int year ,int otherInfo){
+		return getCount(new SqlText("where o.type=? and o.year=? and o.numValue=?", type,year,otherInfo))>0;
+	}
 }

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.foxlink.mes.Interface.DepartmentType;
 import com.foxlink.mes.Interface.LoginState;
 import com.foxlink.mes.Interface.PerformanceType;
 import com.foxlink.mes.annotation.LoginCheck;
@@ -28,6 +29,7 @@ import com.foxlink.mes.bean.Admin;
 import com.foxlink.mes.bean.Department;
 import com.foxlink.mes.bean.PerformanceForm;
 import com.foxlink.mes.service.AdminService;
+import com.foxlink.mes.service.DepartmentMoneyService;
 import com.foxlink.mes.service.DepartmentService;
 import com.foxlink.mes.service.PerformanceFormService;
 import com.foxlink.mes.service.PerformanceRecordsService;
@@ -46,6 +48,8 @@ public class PerformanceFormContrl {
 	private PerformanceFormService performanceFormService;
 	@Resource
 	private PerformanceRecordsService performanceRecordsService;
+	@Resource
+	private DepartmentMoneyService departmentMoneyService;
 	@RequestMapping("selectType")
 	@LoginCheck(valueUrl="/performance/selectType.html")
 	public ModelAndView selectType(HttpServletRequest request,@RequestParam(name="departmentId",defaultValue="100")int departmentId,
@@ -167,6 +171,74 @@ public class PerformanceFormContrl {
 		
 		mav=selectType(request, departmentId, type, year, otherInfo);
 		mav.addObject("mesage", message);
+		return mav;
+		
+	}
+	@RequestMapping("commitRecords.html")
+	public ModelAndView commitRecords(int[] ids,int type,int year,int otherInfo,int userId,int departmentId){
+		ModelAndView mav= new ModelAndView();
+		mav.setViewName("performance/showusers");
+		String message=null;
+		try {
+			message=performanceRecordsService.commitRecords(userId, type, year, otherInfo, ids);
+		} catch (Exception e) {
+			// TODO: handle exception
+			message="已提交，重复提交无效";
+		}
+		mav.addObject("message", message);
+		List<Map<String, Object>> userInfos = departmentService.getPerformanceUserAndState(departmentId, type, year, otherInfo);
+		mav.addObject("userInfos", userInfos);
+		mav.addObject("department", departmentService.find(departmentId));
+		mav.setViewName("performance/showusers");
+		mav.addObject("type", type);
+		mav.addObject("year", year);
+		mav.addObject("otherInfo", otherInfo);
+		return mav;
+		
+	}
+	@RequestMapping("auditSelect")
+	@LoginCheck(valueUrl = "/performance/auditSelect.html")
+	public ModelAndView auditSelect(HttpServletRequest request,
+			@RequestParam(name="type",defaultValue="100")int type,
+			@RequestParam(name="year",defaultValue="100")int year,
+			@RequestParam(name="otherInfo",defaultValue="0")int otherInfo,
+			int [] ids,int[] moneys) throws Exception{
+		ModelAndView mav = new ModelAndView("audit/selectType");
+		String message=null;
+		Admin admin = WebUtil.getAdmin(request);
+		int maxType = departmentService.getDepartmentStateForCurrentUser(admin.getId());
+		if(maxType!=DepartmentType.TWO){
+			message="当前用户没有稽核权限。";
+		}else{
+			if (year!=100) {
+				
+				mav.addObject("departments", departmentService.getDepartmentsRecords(type, year, otherInfo));
+				
+				mav.setViewName("audit/showdepartments");
+			}
+		}
+		mav.addObject("message", message);
+		mav.addObject("year", year);
+		mav.addObject("type", type);
+		mav.addObject("otherInfo", otherInfo);
+		return mav;
+		
+	}
+	@RequestMapping("audit")
+	public ModelAndView audit(HttpServletRequest request,
+			@RequestParam(name="type",defaultValue="100")int type,
+			@RequestParam(name="year",defaultValue="100")int year,
+			@RequestParam(name="otherInfo",defaultValue="0")int otherInfo,
+			int departmentId) throws Exception{
+		ModelAndView mav = new ModelAndView("audit/audit");
+		String message=null;
+		//这里要取得员工信息，考核记录中的基本工资，绩效总分数，部门绩效奖金
+		if (departmentMoneyService.departmentMoneyIsSet(type, year, otherInfo)) {
+			
+		}else{
+			message="未设置该类型考核部门绩效金额";
+		}
+		mav.addObject("message", message);
 		return mav;
 		
 	}

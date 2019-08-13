@@ -17,4 +17,8 @@ public interface DepartmentService extends BaseService<Department>{
 
 	boolean checkIsFinish(int departmentId, int type, int year, int otherInfo);
 
+	int getDepartmentStateForCurrentUser(int userId);
+
+	List<Map<String, Object>> getDepartmentsRecords(int type, int year, int otherInfo);
+
 }

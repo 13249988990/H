@@ -15,6 +15,7 @@
 				</d:role>
 				<li><a href="<c:url value="/performance/selectType.html"/>">绩效填写</a></li>
 				<li><a href="<c:url value="/department/setMoney.html"/>">部门金额管理</a></li>
+				<li><a href="<c:url value="/performance/auditSelect.html"/>">稽核</a></li>
 				
 				<li><a href="<c:url value="/systemReload.html"/>">刷新系统</a></li>
 				<li><a href="<c:url value="/Firefox21.0.exe"/>">火狐下载</a></li>

@@ -6,4 +6,6 @@ public interface DepartmentMoneyService extends BaseService<DepartmentMoney>{
 
 	String saveMoney(int type, int year, int otherInfo, int[] ids, int[] moneys) throws Exception;
 
+	boolean departmentMoneyIsSet(int type, int year, int otherInfo);
+
 }
